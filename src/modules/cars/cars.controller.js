@@ -35,6 +35,7 @@ carController.getRelatedData = catchAsync(async (req, res) => {
 });
 
 carController.getCarById = catchAsync(async (req, res) => {
+  console.log("req.params", req.params);
   const car = await carService.getCarById(req.params.id);
   if (!car) {
     throw new ApiError(httpStatus.NOT_FOUND, "Car not found");

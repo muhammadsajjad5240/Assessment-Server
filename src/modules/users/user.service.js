@@ -30,9 +30,8 @@ userService.createUser = async (UserBody) => {
  */
 
 userService.queryUsers = async (filter, options) => {
-  const result = UserModel.paginate(filter, {
+  const result = UserModel.find(filter, {
     ...options,
-    select: userListResponse,
   });
   return result;
 };
@@ -53,7 +52,7 @@ userService.getUsers = async () => {
  */
 
 userService.getUserById = async (id) => {
-  const user = await UserModel.findById(id).populate("avatarId");
+  const user = await UserModel.findById(id);
   return user;
 };
 
@@ -110,12 +109,12 @@ userService.updateUserById = async (UserId, updateBody) => {
  */
 
 userService.deleteUserById = async (UserId) => {
-  const UserData = await userService.getUserById(UserId);
-  if (!UserData) {
+  try {
+    const user = await UserModel.findByIdAndDelete(UserId);
+    return user;
+  } catch (error) {
     throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   }
-  await UserData.remove();
-  return UserData;
 };
 
 module.exports = userService;

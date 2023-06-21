@@ -19,9 +19,6 @@ userController.createUser = catchAsync(async (req, res) => {
 });
 
 userController.findAllUsers = catchAsync(async (req, res) => {
-  if (req.user.role !== "admin")
-    throw new ApiError(httpStatus.FORBIDDEN, httpStatus["403_MESSAGE"]);
-
   const filter = pick(req.query, ["email", "firstName", "lastName"]);
 
   // wildcard search on email, firstName, lastName
